@@ -1,52 +1,59 @@
 -- Таблиця "User"
+DROP TABLE IF EXISTS "User";
 CREATE TABLE "User" (
-    user_id INT PRIMARY KEY,                      -- Первинний ключ
-    mood VARCHAR(50) NOT NULL,                    -- Настрій користувача (не NULL)
-    CHECK (mood ~ '^[a-zA-Z]+$')                  -- Обмеження регулярного виразу для настрою
+    user_id INT PRIMARY KEY,
+    mood VARCHAR(50) NOT NULL,
+    CHECK (mood ~ '^[a-zA-Z]+$')
 );
 
--- Таблиця Psychologist
-CREATE TABLE Psychologist (
-    psychologist_id INT PRIMARY KEY,              -- Первинний ключ
-    name VARCHAR(100) NOT NULL,                   -- Ім'я психолога
-    experience_years INT CHECK (experience_years >= 0), -- Досвід у роках (має бути >= 0)
-    CHECK (name ~ '^[A-Z][a-zA-Z\s\-]*$')         -- Обмеження регулярного виразу для імені
+-- Таблиця "Psychologist"
+DROP TABLE IF EXISTS "Psychologist";
+CREATE TABLE "Psychologist" (
+    psychologist_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    experience_years INT CHECK (experience_years >= 0),
+    CHECK (name ~ '^[A-Z][a-zA-Z\s\-]*$')
 );
 
--- Таблиця Report
-CREATE TABLE Report (
-    report_id INT PRIMARY KEY,                    -- Первинний ключ
-    summary VARCHAR(500),                         -- Короткий опис звіту
-    report_date DATE,                             -- Дата звіту
-    user_id INT,                                  -- Зовнішній ключ на таблицю "User"
-    psychologist_id INT,                          -- Зовнішній ключ на таблицю Psychologist
+-- Таблиця "Emotion_State"
+DROP TABLE IF EXISTS "Emotion_State";
+CREATE TABLE "Emotion_State" (
+    emotion_id INT PRIMARY KEY,
+    emotion_type VARCHAR(50),
+    intensity INT CHECK (intensity >= 0 AND intensity <= 100),
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
+);
+
+-- Таблиця "Recommendation"
+DROP TABLE IF EXISTS "Recommendation";
+CREATE TABLE "Recommendation" (
+    recommendation_id INT PRIMARY KEY,
+    content VARCHAR(200),
+    emotion_id INT,
+    FOREIGN KEY (emotion_id) REFERENCES "Emotion_State"(emotion_id)
+);
+
+-- Таблиця "Track"
+DROP TABLE IF EXISTS "Track";
+CREATE TABLE "Track" (
+    track_id INT PRIMARY KEY,
+    title VARCHAR(100),
+    genre VARCHAR(50),
+    duration INT CHECK (duration >= 0),
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
+);
+
+-- Таблиця "Report"
+DROP TABLE IF EXISTS "Report";
+CREATE TABLE "Report" (
+    report_id INT PRIMARY KEY,
+    summary VARCHAR(500),
+    report_date DATE,
+    user_id INT,
+    psychologist_id INT,
     FOREIGN KEY (user_id) REFERENCES "User"(user_id),
-    FOREIGN KEY (psychologist_id) REFERENCES Psychologist(psychologist_id)
+    FOREIGN KEY (psychologist_id) REFERENCES "Psychologist"(psychologist_id)
 );
 
--- Таблиця Emotion_State
-CREATE TABLE Emotion_State (
-    emotion_id INT PRIMARY KEY,                   -- Первинний ключ
-    emotion_type VARCHAR(50),                     -- Тип емоції
-    intensity INT CHECK (intensity >= 0 AND intensity <= 100), -- Інтенсивність (межа 0-100)
-    user_id INT,                                  -- Зовнішній ключ на таблицю "User"
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
-);
-
--- Таблиця Recommendation
-CREATE TABLE Recommendation (
-    recommendation_id INT PRIMARY KEY,            -- Первинний ключ
-    content VARCHAR(200),                         -- Рекомендація
-    emotion_id INT,                               -- Зовнішній ключ на таблицю Emotion_State
-    FOREIGN KEY (emotion_id) REFERENCES Emotion_State(emotion_id)
-);
-
--- Таблиця Track
-CREATE TABLE Track (
-    track_id INT PRIMARY KEY,                     -- Первинний ключ
-    title VARCHAR(100),                           -- Назва треку
-    genre VARCHAR(50),                            -- Жанр треку
-    duration INT CHECK (duration >= 0),           -- Тривалість треку (має бути >= 0)
-    user_id INT,                                  -- Зовнішній ключ на таблицю "User"
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
-);
