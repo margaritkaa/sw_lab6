@@ -1,3 +1,11 @@
+-- Удаляем существующие таблицы, если они есть
+DROP TABLE IF EXISTS "Recommendation";
+DROP TABLE IF EXISTS "Track";
+DROP TABLE IF EXISTS "Report";
+DROP TABLE IF EXISTS "Emotion_State";
+DROP TABLE IF EXISTS "Psychologist";
+DROP TABLE IF EXISTS "Users";
+
 -- Таблиця "Users"
 CREATE TABLE "Users" (
     user_id INT PRIMARY KEY,
@@ -10,7 +18,7 @@ CREATE TABLE "Psychologist" (
     psychologist_id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     experience_years INT CHECK (experience_years >= 0),
-    CHECK (name ~ '^[A-Z][a-zA-Z\s\-]*$')
+    CHECK (name ~ '^[A-Za-z\s\.\-]*$')  -- Разрешаем точки в имени
 );
 
 -- Таблиця "Emotion_State"
