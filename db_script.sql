@@ -1,5 +1,4 @@
 -- Таблиця "User"
-DROP TABLE IF EXISTS "User";
 CREATE TABLE "User" (
     user_id INT PRIMARY KEY,
     mood VARCHAR(50) NOT NULL,
@@ -7,7 +6,6 @@ CREATE TABLE "User" (
 );
 
 -- Таблиця "Psychologist"
-DROP TABLE IF EXISTS "Psychologist";
 CREATE TABLE "Psychologist" (
     psychologist_id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -16,7 +14,6 @@ CREATE TABLE "Psychologist" (
 );
 
 -- Таблиця "Emotion_State"
-DROP TABLE IF EXISTS "Emotion_State";
 CREATE TABLE "Emotion_State" (
     emotion_id INT PRIMARY KEY,
     emotion_type VARCHAR(50),
@@ -26,7 +23,6 @@ CREATE TABLE "Emotion_State" (
 );
 
 -- Таблиця "Recommendation"
-DROP TABLE IF EXISTS "Recommendation";
 CREATE TABLE "Recommendation" (
     recommendation_id INT PRIMARY KEY,
     content VARCHAR(200),
@@ -35,7 +31,6 @@ CREATE TABLE "Recommendation" (
 );
 
 -- Таблиця "Track"
-DROP TABLE IF EXISTS "Track";
 CREATE TABLE "Track" (
     track_id INT PRIMARY KEY,
     title VARCHAR(100),
@@ -46,7 +41,6 @@ CREATE TABLE "Track" (
 );
 
 -- Таблиця "Report"
-DROP TABLE IF EXISTS "Report";
 CREATE TABLE "Report" (
     report_id INT PRIMARY KEY,
     summary VARCHAR(500),
@@ -56,4 +50,3 @@ CREATE TABLE "Report" (
     FOREIGN KEY (user_id) REFERENCES "User"(user_id),
     FOREIGN KEY (psychologist_id) REFERENCES "Psychologist"(psychologist_id)
 );
-
